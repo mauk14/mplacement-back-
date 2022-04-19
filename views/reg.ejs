@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="604574523814-40f76epsh7ji778mnp5c57ct9jm41dqv.apps.googleusercontent.com">
 </head>
 <body>
     <%- include ('nav.ejs') %>
@@ -37,7 +39,23 @@
                       <label class="form-check-label" for="rules">You agree to our rules</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
+                    
                   </form>
+                  <div class="g-signin2" data-onsuccess="onSignIn" style="position: relative; left: 80px;"></div>
+                  <script>
+                    function onSignIn(googleUser) {
+                      var id_token = googleUser.getAuthResponse().id_token;
+                      console.log(id_token)
+
+                      var xhr = new XMLHttpRequest();
+                      xhr.open('POST', '/reg');
+                      xhr.setRequestHeader('Content-Type', 'application/json');
+                      xhr.onload = function() {
+                          console.log('Signed in as: ' + xhr.responseText);
+                      };
+                      xhr.send(JSON.stringify({token : id_token}));
+                    }
+                  </script>
             
             </div>
 
