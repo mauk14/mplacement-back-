@@ -23,8 +23,9 @@ class authController {
                 return res.status(400).json({message: errors})
             }
             const username = await req.body.username;
+            const email = await req.body.email;
             const password = await req.body.password;
-            const candidate = await User.findOne({username})
+            const candidate = await User.findOne({email})
             if(candidate) {
                 return res.status(400).json({message: "Email have alredy used"})
             }
@@ -33,9 +34,9 @@ class authController {
             const salt = await bcrypt.genSaltSync(10);
             const hashPassword = await bcrypt.hashSync(password, salt);
             const userRole = await Role.findOne({value: "USER"})
-            const user = new User({username, password: hashPassword, roles: [userRole.value]})
+            const user = new User({username, email, password: hashPassword, roles: [userRole.value]})
             await user.save();
-            return res.json({message: "User has registered"}) 
+            return res.redirect("/")
         } catch(e) {
             console.log(e);
             res.status(400).json({message: "error"})
@@ -45,11 +46,11 @@ class authController {
 
     async login(req, res) {
         try {
-            const username = await req.body.username;
+            const email = await req.body.email;
             const password = await req.body.password;
-            console.log(username)
+            console.log(email)
             console.log(password)
-            const user = await User.findOne({username})
+            const user = await User.findOne({email})
             if(!user) {
                 return res.status(400).json({message: "User not found"});
             }
@@ -59,7 +60,7 @@ class authController {
             }
 
             const token = generateAccessToken(user._id, user.roles);
-            return res.json();
+            return res.redirect("/")
 
         } catch(e) {
             console.log(e);

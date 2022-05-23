@@ -4,7 +4,7 @@ const authRouter = require('./authRouter')
 const mongoose = require('mongoose');
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const db = 'mongodb+srv://admin-Zhandos:Qwerty12345@cluster0.kcsik.mongodb.net/?retryWrites=true&w=majority';
 
 
