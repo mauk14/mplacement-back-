@@ -1,5 +1,6 @@
 const User = require('./schemes/User');
 const Role = require('./schemes/Role');
+const Guser = require('./schemes/Guser');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {validationResult} = require('express-validator')
@@ -66,6 +67,27 @@ class authController {
             console.log(e);
             res.status(400).json({message: "error"})
 
+        }
+    }
+
+    async gLogin(req, res) {
+        try {
+            const email = await req.user.email;
+            const username = await req.user.displayName;
+            console.log(email)
+            console.log(username)
+            const user = await Guser.findOne({email})
+            if(!user) {
+                const userRole = await Role.findOne({value: "USER"})
+                const user = new Guser({username, email, roles: [userRole.value]})
+                await user.save();
+            }
+            return res.redirect("/")
+    
+        } catch(e) {
+            console.log(e);
+            res.status(400).json({message: "error"})
+    
         }
     }
 
