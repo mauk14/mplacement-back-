@@ -8,6 +8,7 @@ const bodyParser = require('body-parser')
 const passport = require('passport');
 const roleMiddleware = require("./middleware/roleMiddleware") 
 const urlencodedParser = bodyParser.urlencoded({extended: false})
+const session = require("express-session");
 
 router.use(session({secret:"cats"}));
 app.use(passport.initialize());
