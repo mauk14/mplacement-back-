@@ -1,6 +1,5 @@
 const User = require('./schemes/User');
 const Role = require('./schemes/Role');
-const Guser = require('./schemes/Guser');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {validationResult} = require('express-validator')
