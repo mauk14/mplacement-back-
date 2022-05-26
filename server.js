@@ -22,6 +22,7 @@ app.use(session({secret:"cats"}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 mongoose
     .connect(db)
     .then(res => console.log('Connected to DB'))
@@ -48,7 +49,7 @@ app.get('/google/callback',
 app.get('/error', (req, res) => {
     res.send('something went wrong');
 })
-app.get('/info',(req, res) => {
+app.get('/info', (req, res) => {
     res.render('productinfo', {auth:res.user})
 })
 

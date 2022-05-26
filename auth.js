@@ -21,7 +21,7 @@ module.exports = function () {
                         res.render("catalog",{user:res.user,auth:res.user})
                     }
                     else{
-                        const user = jwt.verify(token, process.env.secret)
+                        const user = jwt.verify(token, secret)
                         res.user= await User.findById(user.id)
 
                     }
