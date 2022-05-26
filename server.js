@@ -30,7 +30,7 @@ mongoose
 
   
 
-app.get('/', auth(), (req, res) => {
+app.get('/', (req, res) => {
     res.render('catalog')
 })
 
@@ -48,7 +48,7 @@ app.get('/google/callback',
 app.get('/error', (req, res) => {
     res.send('something went wrong');
 })
-app.get('/info', auth(), (req, res) => {
+app.get('/info', (req, res) => {
     res.render('productinfo')
 })
 

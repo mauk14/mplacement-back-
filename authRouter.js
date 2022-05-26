@@ -16,20 +16,20 @@ router.use(passport.session());
 
 
 router
-    .get('/login', auth(), (req, res) => {
+    .get('/login',  (req, res) => {
         res.render('login')
     })
-    .post('/login', auth(), urlencodedParser, controller.login)
+    .post('/login',  urlencodedParser, controller.login)
 
 router
     .get('/reg', auth(), (req, res) => {
         res.render('reg')
     })
-    .post('/reg', auth(), urlencodedParser, controller.registration)    
+    .post('/reg', urlencodedParser, controller.registration)    
 
 
-router.get('/auth/db', auth(), controller.gLogin);
+router.get('/auth/db',  controller.gLogin);
 
-router.get('/users', auth(), roleMiddleware(["ADMIN"]), controller.getUsers);    
+router.get('/users', roleMiddleware(["ADMIN"]), controller.getUsers);    
 
 module.exports = router;
