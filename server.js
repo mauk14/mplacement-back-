@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const app = express();
 const passport = require('passport');
 const config = require('./config')
+const auth = require("./auth")
 
 const port = process.env.PORT || 3000;
 const db = 'mongodb+srv://admin-Zhandos:Qwerty12345@cluster0.kcsik.mongodb.net/?retryWrites=true&w=majority';
@@ -23,7 +24,9 @@ mongoose
 
 
 
-    
+router.get('/', auth(), (req, res) => {
+    res.render('catalog')
+})    
 
 app.listen(port, (err) => {
     err ? console.log(err) : console.log("server started")
