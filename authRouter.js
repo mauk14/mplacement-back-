@@ -6,17 +6,13 @@ const auth = require("./auth")
 const authGoogle = require('./authGoogle')
 const bodyParser = require('body-parser')
 const passport = require('passport');
+const roleMiddleware = require('./middleware/roleMiddleware') 
 const urlencodedParser = bodyParser.urlencoded({extended: false})
-const session = require("express-session");
 
 router.use(session({secret:"cats"}));
-router.use(passport.initialize());
-router.use(passport.session());
 
 
-router.get('/', auth(), (req, res) => {
-    res.render('catalog')
-})
+
 
 router.get('/auth/google', 
     passport.authenticate('google', {scope: ['email', 'profile']})
