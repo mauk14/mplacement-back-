@@ -11,8 +11,8 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 const session = require("express-session");
 
 router.use(session({secret:"cats"}));
-app.use(passport.initialize());
-app.use(passport.session());
+router.use(passport.initialize());
+router.use(passport.session());
 
 
 router
