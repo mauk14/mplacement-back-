@@ -18,7 +18,7 @@ module.exports = function () {
 
                     if(decoded.exp<new Date().getTime()/1000){
                         res.clearCookie("auth")
-                        res.render("message",{user:res.user,auth:res.user,message:"Logout",timeout:300,where:"/home"})
+                        res.render("catalog",{user:res.user,auth:res.user})
                     }
                     else{
                         const user = jwt.verify(token, process.env.secret)
