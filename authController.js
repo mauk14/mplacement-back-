@@ -104,6 +104,7 @@ class authController {
             let user = await User.findOne({email})
             if(!user) {
                 const userRole = await Role.findOne({value: "USER"})
+                const salt = await bcrypt.genSaltSync(10);
                 const hashPassword = await bcrypt.hashSync(randomPass(), salt);
                 user = new User({username, email, password: hashPassword, roles: [userRole.value]})
                 await user.save();
