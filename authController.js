@@ -60,6 +60,8 @@ class authController {
             const userRole = await Role.findOne({value: "USER"})
             const user = new User({username, email, password: hashPassword, roles: [userRole.value]})
             await user.save();
+            const token = generateAccessToken(user._id, user.roles);
+            res.cookie("auth",'Bearer '+ token)
             return res.redirect("/")
         } catch(e) {
             console.log(e);
@@ -84,6 +86,7 @@ class authController {
             }
 
             const token = generateAccessToken(user._id, user.roles);
+            res.cookie("auth",'Bearer '+ token)
             return res.redirect("/")
 
         } catch(e) {
@@ -103,7 +106,7 @@ class authController {
             if(!user) {
                 const userRole = await Role.findOne({value: "USER"})
                 const hashPassword = await bcrypt.hashSync(randomPass(), salt);
-                const user = new User({username, email, password: hashPassword, roles: [userRole.value]})
+                user = new User({username, email, password: hashPassword, roles: [userRole.value]})
                 await user.save();
             }
             const token = generateAccessToken(user._id, user.roles);
