@@ -6,8 +6,7 @@ const mongoose = require('mongoose');
 const app = express();
 const authGoogle = require('./authGoogle')
 const passport = require('passport');
-const User = require('./schemes/User');
-const Role = require('./schemes/Role');
+const config = require('./config')
 
 const port = process.env.PORT || 3000;
 const db = 'mongodb+srv://admin-Zhandos:Qwerty12345@cluster0.kcsik.mongodb.net/?retryWrites=true&w=majority';
@@ -45,26 +44,6 @@ app.get('/google/callback',
     })
 )
 
-app.get('/auth/db', async (req, res) => {
-    try {
-        const email = await req.user.email;
-        const username = await req.user.displayName;
-        console.log(email)
-        console.log(username)
-        const user = await User.findOne({email})
-        if(!user) {
-            const userRole = await Role.findOne({value: "USER"})
-            const user = new User({username, email, password: "awdsadwadsada",roles: [userRole.value]})
-            await user.save();
-        }
-        return res.redirect("/")
-
-    } catch(e) {
-        console.log(e);
-        res.status(400).json({message: "error"})
-
-    }
-})
 app.get('/error', (req, res) => {
     res.send('something went wrong');
 })

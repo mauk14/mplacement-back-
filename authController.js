@@ -15,6 +15,29 @@ const generateAccessToken = (id, roles) => {
     return jwt.sign(payload, secret, {expiresIn: "24"})
 }
 
+
+const randomPass = () => {
+    let a = Math.round(Math.random() * 11);
+    let passw = a % 3 == 0 ? Math.round(Math.random() * 9) :
+    a % 3 == 1 ? String.fromCharCode(Math.round(Math.random() * (90 - 65) + 65)) :
+    String.fromCharCode(Math.round(Math.random() * (122 - 97) + 97));
+
+    for (let i = 0; i < 20; i++) {
+        if(Math.round(Math.random() * 11) % 2 == 0) {
+            passw += Math.round(Math.random() * 9);
+        }
+        else {
+            if(Math.round(Math.random() * 11) % 2 == 0) {
+                passw += String.fromCharCode(Math.round(Math.random() * (90 - 65) + 65));
+            }
+            else {
+                passw += String.fromCharCode(Math.round(Math.random() * (122 - 97) + 97));
+            }
+        }
+    }
+    return passw;
+}
+
 class authController {
 
     async registration(req, res) {
@@ -76,12 +99,15 @@ class authController {
             const username = await req.user.displayName;
             console.log(email)
             console.log(username)
-            const user = await Guser.findOne({email})
+            const user = await User.findOne({email})
             if(!user) {
                 const userRole = await Role.findOne({value: "USER"})
-                const user = new Guser({username, email, roles: [userRole.value]})
+                const hashPassword = await bcrypt.hashSync(randomPass(), salt);
+                const user = new User({username, email, password: hashPassword, roles: [userRole.value]})
                 await user.save();
             }
+            const token = generateAccessToken(user._id, user.roles);
+            res.cookie("auth",'Bearer '+ token)
             return res.redirect("/")
     
         } catch(e) {
