@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
-const User = require("../schemes/User")
-const Role = require("../schemes/Role")
+const User = require("./schemes/User")
+const Role = require("./schemes/Role")
 
 module.exports = function () {
     return async function (req, res, next) {
