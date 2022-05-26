@@ -30,7 +30,7 @@ mongoose
 
   
 
-app.get('/', (req, res) => {
+app.get('/', auth(), (req, res) => {
     res.render('catalog')
 })
 
