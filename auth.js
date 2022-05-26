@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require("./schemes/User")
 const Role = require("./schemes/Role")
+const {secret} = require("./config")
 
 module.exports = function () {
     return async function (req, res, next) {
@@ -13,7 +14,7 @@ module.exports = function () {
                     if (!token) {
                         return res.status(403).json({message: "User not authorized"})
                     }
-                    const decoded=jwt.decode(token, process.env.secret)
+                    const decoded=jwt.decode(token, secret)
 
                     if(decoded.exp<new Date().getTime()/1000){
                         res.clearCookie("auth")
